@@ -37,9 +37,31 @@ cp frontend/.env.example frontend/.env
 | Variable | Descripción | Ejemplo |
 |---|---|---|
 | `DATABASE_URL` | Cadena de conexión a Postgres | `postgresql://postgres:postgres@localhost:55434/gestion_inmuebles?schema=public` |
-| `JWT_SECRET` | Secreto para firmar los JWT — **sin valor por defecto**, debes generarlo | `openssl rand -hex 32` |
+| `JWT_SECRET` | Secreto para firmar los JWT — **sin valor por defecto**, debes generarlo (ver abajo) | — |
 | `JWT_EXPIRES_IN` | Vigencia del token | `1d` |
 | `PORT` | Puerto del backend | `3000` |
+
+### Generar `JWT_SECRET`
+
+No trae un valor por defecto a propósito (seguridad). Generalo una vez con cualquiera de estos comandos:
+
+```bash
+# Opción 1: con OpenSSL (viene con Git Bash en Windows)
+openssl rand -hex 32
+
+# Opción 2: con Node (siempre disponible, ya lo necesitas para el proyecto)
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+```
+
+Pegá el resultado en `backend/.env`:
+
+```
+JWT_SECRET="el-valor-que-generaste-aca"
+```
+
+- Generalo **una sola vez** por máquina/ambiente. Si lo cambiás después, invalida todas las sesiones activas (los JWT firmados con el secreto anterior dejan de validar).
+- No hace falta que sea el mismo valor en todas las máquinas donde corras el proyecto — cada entorno puede tener el suyo.
+- Nunca se commitea: `backend/.env` está en `.gitignore`; solo `.env.example` (con el campo vacío) va al repo.
 
 **`frontend/.env`**
 
