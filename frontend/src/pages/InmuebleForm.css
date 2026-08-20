@@ -52,6 +52,7 @@
 
 .form-fila .form-campo {
   flex: 1;
+  margin-top: 0;
 }
 
 .form-error {
