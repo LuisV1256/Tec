@@ -1,0 +1,67 @@
+.boton-primario,
+.boton-secundario,
+.boton-peligro {
+  display: inline-block;
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  border: 1px solid transparent;
+  text-align: center;
+}
+
+.boton-primario {
+  background: #10233f;
+  color: #ffffff;
+  border-color: #10233f;
+}
+
+.boton-primario:hover {
+  background: #0b1a30;
+}
+
+.boton-primario:disabled {
+  background: #9ca3af;
+  border-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.boton-secundario {
+  background: #ffffff;
+  color: #10233f;
+  border-color: #10233f;
+}
+
+.boton-secundario:hover {
+  background: #f3f4f6;
+}
+
+.boton-peligro {
+  background: #ffffff;
+  color: #b91c1c;
+  border-color: #b91c1c;
+}
+
+.boton-peligro:hover {
+  background: #fef2f2;
+}
+
+.boton-peligro:disabled,
+.boton-secundario:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.estado-activo {
+  color: #1e7e34;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.estado-inactivo {
+  color: #9ca3af;
+  font-weight: 600;
+  font-size: 13px;
+}

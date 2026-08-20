@@ -1,13 +1,13 @@
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
+import { register } from '../services/auth.service';
 import { ApiError } from '../types/api';
-import './Login.css';
+import '../pages/Login.css';
 
-export function Login() {
-  const { login } = useAuth();
+export function AddUser() {
   const navigate = useNavigate();
 
+  const [nombre, setNombre] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -16,12 +16,18 @@ export function Login() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError(null);
+
+    if (password.length < 8 || !/(?=.*[a-zA-Z])(?=.*\d)/.test(password)) {
+      setError('La contraseña debe tener al menos 8 caracteres, con letras y números.');
+      return;
+    }
+
     setLoading(true);
     try {
-      await login(email, password);
-      navigate('/inmuebles', { replace: true });
+      await register(nombre, email, password);
+      navigate('/login', { replace: true });
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : 'No se pudo iniciar sesión.');
+      setError(err instanceof ApiError ? err.message : 'No se pudo registrar.');
     } finally {
       setLoading(false);
     }
@@ -30,10 +36,23 @@ export function Login() {
   return (
     <div className="login-page">
       <div className="login-card">
-        <h1 className="login-title">Iniciar sesión</h1>
+        <h1 className="login-title">Crear cuenta</h1>
         <p className="login-subtitle">Gestión de usuarios e inmuebles</p>
 
         <form className="login-form" onSubmit={handleSubmit}>
+          <label className="login-label" htmlFor="nombre">
+            Nombre
+          </label>
+          <input
+            id="nombre"
+            type="text"
+            className="login-input"
+            value={nombre}
+            onChange={(e) => setNombre(e.target.value)}
+            minLength={2}
+            required
+          />
+
           <label className="login-label" htmlFor="email">
             Correo electrónico
           </label>
@@ -56,7 +75,7 @@ export function Login() {
             className="login-input"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="••••••••"
+            placeholder="Mínimo 8 caracteres, letras y números"
             minLength={8}
             required
           />
@@ -64,12 +83,12 @@ export function Login() {
           {error && <p className="login-error">{error}</p>}
 
           <button type="submit" className="login-button" disabled={loading}>
-            {loading ? 'Ingresando...' : 'Ingresar'}
+            {loading ? 'Creando cuenta...' : 'Crear cuenta'}
           </button>
         </form>
 
         <p className="login-footer">
-          ¿No tienes cuenta? <Link to="/register">Regístrate</Link>
+          ¿Ya tienes cuenta? <Link to="/login">Inicia sesión</Link>
         </p>
       </div>
     </div>

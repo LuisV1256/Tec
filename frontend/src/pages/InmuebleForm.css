@@ -1,0 +1,71 @@
+.form-page {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 32px 24px;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color: #10233f;
+}
+
+.form-page h1 {
+  font-size: 22px;
+  margin: 0 0 20px;
+}
+
+.form-card {
+  background: #ffffff;
+  border: 1px solid #e2e5eb;
+  border-radius: 12px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-campo {
+  display: flex;
+  flex-direction: column;
+  margin-top: 16px;
+}
+
+.form-campo:first-child {
+  margin-top: 0;
+}
+
+.form-campo label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 6px;
+}
+
+.form-campo input,
+.form-campo select {
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 14px;
+}
+
+.form-fila {
+  display: flex;
+  gap: 12px;
+}
+
+.form-fila .form-campo {
+  flex: 1;
+}
+
+.form-error {
+  margin: 16px 0 0;
+  font-size: 13px;
+  color: #b91c1c;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+
+.form-acciones {
+  display: flex;
+  gap: 10px;
+  margin-top: 22px;
+}

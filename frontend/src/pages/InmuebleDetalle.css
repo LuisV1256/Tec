@@ -1,0 +1,54 @@
+.detalle-page {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 32px 24px;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color: #10233f;
+}
+
+.detalle-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.detalle-header h1 {
+  font-size: 22px;
+  margin: 0;
+}
+
+.detalle-card {
+  background: #ffffff;
+  border: 1px solid #e2e5eb;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.detalle-datos {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  row-gap: 12px;
+  margin: 0;
+}
+
+.detalle-datos dt {
+  font-weight: 600;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.detalle-datos dd {
+  margin: 0;
+  font-size: 14px;
+}
+
+.detalle-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid #e2e5eb;
+}

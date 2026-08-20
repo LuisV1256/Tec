@@ -101,3 +101,15 @@
   background: #9ca3af;
   cursor: not-allowed;
 }
+
+.login-footer {
+  margin: 20px 0 0;
+  font-size: 13px;
+  color: #6b7280;
+  text-align: center;
+}
+
+.login-footer a {
+  color: #10233f;
+  font-weight: 600;
+}

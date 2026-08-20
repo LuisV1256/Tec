@@ -1,0 +1,23 @@
+.estado-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.estado-badge--disponible {
+  background: #e6f4ea;
+  color: #1e7e34;
+}
+
+.estado-badge--reservado {
+  background: #fff4e0;
+  color: #9a6700;
+}
+
+.estado-badge--vendido {
+  background: #e5e7eb;
+  color: #374151;
+}
