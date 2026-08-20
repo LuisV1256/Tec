@@ -23,6 +23,8 @@ model Usuario {
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
+  inmuebles Inmueble[] @relation("VendedorInmuebles")
+
   @@map("usuarios")
 }
 
@@ -32,5 +34,38 @@ model TipoInmueble {
   nombre String
   activo Boolean @default(true)
 
+  inmuebles Inmueble[]
+
   @@map("tipo_inmueble")
+}
+
+model EstadoInmueble {
+  id     Int     @id @default(autoincrement())
+  codigo String  @unique
+  nombre String
+  activo Boolean @default(true)
+
+  inmuebles Inmueble[]
+
+  @@map("estado_inmueble")
+}
+
+model Inmueble {
+  id              String    @id @default(uuid())
+  direccion       String
+  precio          Decimal   @db.Decimal(14, 2)
+  habitaciones    Int
+  metrosCuadrados Decimal   @db.Decimal(8, 2)
+  tipoInmuebleId  Int
+  vendedorId      String
+  estadoId        Int
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  deletedAt       DateTime?
+
+  tipoInmueble TipoInmueble   @relation(fields: [tipoInmuebleId], references: [id])
+  vendedor     Usuario        @relation("VendedorInmuebles", fields: [vendedorId], references: [id])
+  estado       EstadoInmueble @relation(fields: [estadoId], references: [id])
+
+  @@map("inmuebles")
 }

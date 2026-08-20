@@ -11,6 +11,12 @@ const tiposInmueble = [
   { codigo: 'LOCAL_COMERCIAL', nombre: 'Local comercial' },
 ];
 
+const estadosInmueble = [
+  { codigo: 'DISPONIBLE', nombre: 'Disponible' },
+  { codigo: 'RESERVADO', nombre: 'Reservado' },
+  { codigo: 'VENDIDO', nombre: 'Vendido' },
+];
+
 async function main() {
   for (const tipo of tiposInmueble) {
     await prisma.tipoInmueble.upsert({
@@ -20,6 +26,15 @@ async function main() {
     });
   }
   console.log(`Seed completado: ${tiposInmueble.length} tipos de inmueble.`);
+
+  for (const estado of estadosInmueble) {
+    await prisma.estadoInmueble.upsert({
+      where: { codigo: estado.codigo },
+      update: { nombre: estado.nombre },
+      create: estado,
+    });
+  }
+  console.log(`Seed completado: ${estadosInmueble.length} estados de inmueble.`);
 }
 
 main()
