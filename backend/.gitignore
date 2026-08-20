@@ -6,6 +6,12 @@
 # Prisma generated client (regenerated with `npx prisma generate`)
 /generated/prisma
 
+# Local AI-agent tooling installed by `prisma init` (not part of the app)
+/.claude
+/.agents
+/.windsurf
+skills-lock.json
+
 # Logs
 logs
 *.log
