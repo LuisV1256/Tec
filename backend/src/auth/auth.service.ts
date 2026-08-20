@@ -6,6 +6,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../prisma/prisma.service';
+import { sanitizarUsuario } from '../common/sanitizar-usuario';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { JwtPayload } from './jwt-payload.interface';
@@ -18,7 +19,7 @@ export class AuthService {
   ) {}
 
   async register(dto: RegisterDto) {
-    const existente = await this.prisma.usuario.findUnique({
+    const existente = await this.prisma.db.usuario.findUnique({
       where: { email: dto.email },
     });
     if (existente) {
@@ -27,7 +28,7 @@ export class AuthService {
 
     const passwordHash = await bcrypt.hash(dto.password, 10);
 
-    const usuario = await this.prisma.usuario.create({
+    const usuario = await this.prisma.db.usuario.create({
       data: {
         nombre: dto.nombre,
         email: dto.email,
@@ -35,15 +36,15 @@ export class AuthService {
       },
     });
 
-    return this.sanitizar(usuario);
+    return sanitizarUsuario(usuario);
   }
 
   async login(dto: LoginDto) {
-    const usuario = await this.prisma.usuario.findUnique({
+    const usuario = await this.prisma.db.usuario.findUnique({
       where: { email: dto.email },
     });
 
-    if (!usuario || !usuario.activo || usuario.deletedAt) {
+    if (!usuario || !usuario.activo) {
       throw new UnauthorizedException('Credenciales inválidas.');
     }
 
@@ -60,12 +61,7 @@ export class AuthService {
 
     return {
       accessToken: this.jwtService.sign(payload),
-      usuario: this.sanitizar(usuario),
+      usuario: sanitizarUsuario(usuario),
     };
-  }
-
-  private sanitizar(usuario: { password: string; [key: string]: unknown }) {
-    const { password, ...resto } = usuario;
-    return resto;
   }
 }

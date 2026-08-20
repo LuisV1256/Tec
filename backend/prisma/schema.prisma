@@ -29,10 +29,11 @@ model Usuario {
 }
 
 model TipoInmueble {
-  id     Int     @id @default(autoincrement())
-  codigo String  @unique
-  nombre String
-  activo Boolean @default(true)
+  id        String    @id @default(uuid())
+  codigo    String    @unique
+  nombre    String
+  activo    Boolean   @default(true)
+  deletedAt DateTime?
 
   inmuebles Inmueble[]
 
@@ -40,10 +41,11 @@ model TipoInmueble {
 }
 
 model EstadoInmueble {
-  id     Int     @id @default(autoincrement())
-  codigo String  @unique
-  nombre String
-  activo Boolean @default(true)
+  id        String    @id @default(uuid())
+  codigo    String    @unique
+  nombre    String
+  activo    Boolean   @default(true)
+  deletedAt DateTime?
 
   inmuebles Inmueble[]
 
@@ -56,9 +58,9 @@ model Inmueble {
   precio          Decimal   @db.Decimal(14, 2)
   habitaciones    Int
   metrosCuadrados Decimal   @db.Decimal(8, 2)
-  tipoInmuebleId  Int
+  tipoInmuebleId  String
   vendedorId      String
-  estadoId        Int
+  estadoId        String
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
   deletedAt       DateTime?
