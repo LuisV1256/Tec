@@ -25,3 +25,12 @@ model Usuario {
 
   @@map("usuarios")
 }
+
+model TipoInmueble {
+  id     Int     @id @default(autoincrement())
+  codigo String  @unique
+  nombre String
+  activo Boolean @default(true)
+
+  @@map("tipo_inmueble")
+}
