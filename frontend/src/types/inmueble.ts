@@ -48,3 +48,18 @@ export interface FiltrosInmuebles {
   orderBy?: 'precio' | 'createdAt';
   order?: 'ASC' | 'DESC';
 }
+
+export interface TransicionEstado {
+  destino: EstadoCodigo;
+  etiqueta: string;
+}
+
+/** Únicas transiciones válidas — refleja TRANSICIONES_VALIDAS del backend. */
+export const TRANSICIONES_VALIDAS: Record<EstadoCodigo, TransicionEstado[]> = {
+  DISPONIBLE: [{ destino: 'RESERVADO', etiqueta: 'Reservar' }],
+  RESERVADO: [
+    { destino: 'DISPONIBLE', etiqueta: 'Volver a disponible' },
+    { destino: 'VENDIDO', etiqueta: 'Marcar como vendido' },
+  ],
+  VENDIDO: [],
+};

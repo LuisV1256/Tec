@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useInmuebles } from '../hooks/useInmuebles';
 import { useTiposInmueble } from '../hooks/useTiposInmueble';
 import { useAuth } from '../hooks/useAuth';
-import { eliminarInmueble } from '../services/inmuebles.service';
+import { cambiarEstadoInmueble, eliminarInmueble } from '../services/inmuebles.service';
 import { InmuebleItem } from '../Componentes/InmuebleItem';
 import { LoadingState } from '../Componentes/LoadingState';
 import { ErrorState } from '../Componentes/ErrorState';
@@ -59,6 +59,18 @@ export function InmuebleList() {
     } catch (err) {
       setAccionError(
         err instanceof ApiError ? err.message : 'No se pudo eliminar el inmueble.',
+      );
+    }
+  }
+
+  async function handleCambiarEstado(id: string, destino: EstadoCodigo) {
+    setAccionError(null);
+    try {
+      await cambiarEstadoInmueble(id, destino);
+      recargar();
+    } catch (err) {
+      setAccionError(
+        err instanceof ApiError ? err.message : 'No se pudo cambiar el estado.',
       );
     }
   }
@@ -150,6 +162,7 @@ export function InmuebleList() {
                 inmueble={inmueble}
                 usuarioActualId={usuario.id}
                 onEliminar={handleEliminar}
+                onCambiarEstado={handleCambiarEstado}
               />
             ))}
           </div>

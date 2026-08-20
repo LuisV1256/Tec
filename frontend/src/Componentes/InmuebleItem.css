@@ -41,6 +41,7 @@
 
 .inmueble-item-acciones {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   margin-top: 6px;
 }

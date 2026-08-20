@@ -7,21 +7,13 @@ import {
   obtenerInmueble,
 } from '../services/inmuebles.service';
 import type { EstadoCodigo, Inmueble } from '../types/inmueble';
+import { TRANSICIONES_VALIDAS } from '../types/inmueble';
 import { ApiError } from '../types/api';
 import { EstadoBadge } from '../Componentes/EstadoBadge';
 import { LoadingState } from '../Componentes/LoadingState';
 import { ErrorState } from '../Componentes/ErrorState';
 import '../Componentes/botones.css';
 import './InmuebleDetalle.css';
-
-const TRANSICIONES_VALIDAS: Record<EstadoCodigo, { destino: EstadoCodigo; etiqueta: string }[]> = {
-  DISPONIBLE: [{ destino: 'RESERVADO', etiqueta: 'Reservar' }],
-  RESERVADO: [
-    { destino: 'DISPONIBLE', etiqueta: 'Volver a disponible' },
-    { destino: 'VENDIDO', etiqueta: 'Marcar como vendido' },
-  ],
-  VENDIDO: [],
-};
 
 export function InmuebleDetalle() {
   const { id } = useParams<{ id: string }>();
