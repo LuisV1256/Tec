@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -14,6 +15,7 @@ import { InmueblesService } from './inmuebles.service';
 import { CreateInmuebleDto } from './dto/create-inmueble.dto';
 import { UpdateInmuebleDto } from './dto/update-inmueble.dto';
 import { CambiarEstadoDto } from './dto/cambiar-estado.dto';
+import { QueryInmueblesDto } from './dto/query-inmuebles.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('inmuebles')
@@ -26,8 +28,8 @@ export class InmueblesController {
   }
 
   @Get()
-  findAll() {
-    return this.inmueblesService.findAll();
+  findAll(@Query() query: QueryInmueblesDto, @CurrentUser() user: { id: string }) {
+    return this.inmueblesService.findAll(query, user.id);
   }
 
   @Get(':id')
@@ -50,7 +52,7 @@ export class InmueblesController {
     @Body() dto: CambiarEstadoDto,
     @CurrentUser() user: { id: string },
   ) {
-    return this.inmueblesService.cambiarEstado(id, dto.estadoCodigo, user.id);
+    return this.inmueblesService.cambiarEstado(id, dto.estado, user.id);
   }
 
   @Delete(':id')
