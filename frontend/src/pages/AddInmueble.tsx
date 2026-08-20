@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTiposInmueble } from '../hooks/useTiposInmueble';
 import { crearInmueble } from '../services/inmuebles.service';
 import { ApiError } from '../types/api';
+import { TIPOS_SIN_HABITACIONES } from '../types/tipoInmueble';
 import { LoadingState } from '../Componentes/LoadingState';
 import { ErrorState } from '../Componentes/ErrorState';
 import '../Componentes/botones.css';
@@ -19,6 +20,19 @@ export function AddInmueble() {
   const [tipoInmuebleId, setTipoInmuebleId] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [enviando, setEnviando] = useState(false);
+
+  const tipoSeleccionado = tipos.find((t) => t.id === tipoInmuebleId);
+  const sinHabitaciones = tipoSeleccionado
+    ? TIPOS_SIN_HABITACIONES.includes(tipoSeleccionado.codigo)
+    : false;
+
+  function handleCambiarTipo(nuevoTipoId: string) {
+    setTipoInmuebleId(nuevoTipoId);
+    const nuevoTipo = tipos.find((t) => t.id === nuevoTipoId);
+    if (nuevoTipo && TIPOS_SIN_HABITACIONES.includes(nuevoTipo.codigo)) {
+      setHabitaciones('0');
+    }
+  }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -38,7 +52,7 @@ export function AddInmueble() {
       const inmueble = await crearInmueble({
         direccion,
         precio: Number(precio),
-        habitaciones: Number(habitaciones),
+        habitaciones: sinHabitaciones ? 0 : Number(habitaciones),
         metrosCuadrados: Number(metrosCuadrados),
         tipoInmuebleId,
       });
@@ -73,7 +87,7 @@ export function AddInmueble() {
           <select
             id="tipo"
             value={tipoInmuebleId}
-            onChange={(e) => setTipoInmuebleId(e.target.value)}
+            onChange={(e) => handleCambiarTipo(e.target.value)}
             required
           >
             <option value="">Selecciona un tipo</option>
@@ -104,9 +118,10 @@ export function AddInmueble() {
               id="habitaciones"
               type="number"
               min="0"
-              value={habitaciones}
+              value={sinHabitaciones ? '0' : habitaciones}
               onChange={(e) => setHabitaciones(e.target.value)}
-              required
+              disabled={sinHabitaciones}
+              required={!sinHabitaciones}
             />
           </div>
         </div>

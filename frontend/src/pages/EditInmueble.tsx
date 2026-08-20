@@ -5,6 +5,7 @@ import { useAuth } from '../hooks/useAuth';
 import { actualizarInmueble, obtenerInmueble } from '../services/inmuebles.service';
 import type { Inmueble } from '../types/inmueble';
 import { ApiError } from '../types/api';
+import { TIPOS_SIN_HABITACIONES } from '../types/tipoInmueble';
 import { LoadingState } from '../Componentes/LoadingState';
 import { ErrorState } from '../Componentes/ErrorState';
 import '../Componentes/botones.css';
@@ -55,6 +56,19 @@ export function EditInmueble() {
 
   const esVendido = inmueble.estado.codigo === 'VENDIDO';
 
+  const tipoSeleccionado = tipos.find((t) => t.id === tipoInmuebleId);
+  const sinHabitaciones = tipoSeleccionado
+    ? TIPOS_SIN_HABITACIONES.includes(tipoSeleccionado.codigo)
+    : false;
+
+  function handleCambiarTipo(nuevoTipoId: string) {
+    setTipoInmuebleId(nuevoTipoId);
+    const nuevoTipo = tipos.find((t) => t.id === nuevoTipoId);
+    if (nuevoTipo && TIPOS_SIN_HABITACIONES.includes(nuevoTipo.codigo)) {
+      setHabitaciones('0');
+    }
+  }
+
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError(null);
@@ -69,7 +83,7 @@ export function EditInmueble() {
       await actualizarInmueble(id!, {
         direccion,
         precio: Number(precio),
-        habitaciones: Number(habitaciones),
+        habitaciones: sinHabitaciones ? 0 : Number(habitaciones),
         metrosCuadrados: Number(metrosCuadrados),
         tipoInmuebleId,
       });
@@ -109,7 +123,7 @@ export function EditInmueble() {
             <select
               id="tipo"
               value={tipoInmuebleId}
-              onChange={(e) => setTipoInmuebleId(e.target.value)}
+              onChange={(e) => handleCambiarTipo(e.target.value)}
               required
             >
               {tipos.map((tipo) => (
@@ -139,9 +153,10 @@ export function EditInmueble() {
                 id="habitaciones"
                 type="number"
                 min="0"
-                value={habitaciones}
+                value={sinHabitaciones ? '0' : habitaciones}
                 onChange={(e) => setHabitaciones(e.target.value)}
-                required
+                disabled={sinHabitaciones}
+                required={!sinHabitaciones}
               />
             </div>
           </div>
